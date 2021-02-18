@@ -1,81 +1,44 @@
 import "./App.css";
 import GoogleMapReact from "google-map-react";
 import { Component } from "react";
+import Testmap from "./components/map";
 
 class App extends Component {
   state = {
-    defaultProps: {
-      center: {
-        lat: 53.483959,
-        lng: -2.244644,
-      },
-      zoom: 11,
+    isLoading: true,
+    position: {
+      latitude: 0,
+      longitude: 0,
     },
   };
 
   componentDidMount() {
-    console.log("mount", this.state.places);
-    this.setState({ places: [] });
+    navigator.geolocation.getCurrentPosition((userPosition) => {
+      this.setState(() => {
+        return {
+          isLoading: false,
+          position: {
+            latitude: userPosition.coords.latitude,
+            longitude: userPosition.coords.longitude,
+          },
+        };
+      });
+    });
   }
 
-  handleApiLoaded = (map, maps) => {
-    let places = [];
-    const poi = new window.google.maps.LatLng(
-      this.state.defaultProps.center.lat,
-      this.state.defaultProps.center.lng
-    );
-    const request = {
-      location: poi,
-      query: "campsites",
-      radius: "500",
-      fields: ["name", "geometry"],
-    };
-    // use map and maps objects
-    console.dir(map);
-    console.dir(maps);
-    const service = new window.google.maps.places.PlacesService(map);
-    console.dir(service);
-    service.textSearch(request, (results, status) => {
-      if (status == window.google.maps.places.PlacesServiceStatus.OK) {
-        for (let i = 0; i < results.length; i++) {
-          places.push(results[i]);
-        }
-        console.log("places", results);
-        this.setState({ places });
-      }
-    });
-  };
-
   render() {
-    return (
-      <div className="App">
-        <div
-          id="map"
-          className="google-map"
-          style={{ height: "50vh", width: "100%" }}
-        >
-          {/* {this.state.map} */}
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: "AIzaSyAuc0iyyESvJUyPOLjHVn4j-RWcEBPrG0U",
-            }}
-            defaultCenter={this.state.defaultProps.center}
-            defaultZoom={this.state.defaultProps.zoom}
-            yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) =>
-              this.handleApiLoaded(map, maps)
-            }
-          ></GoogleMapReact>
-        </div>
+    console.log("rendering", this.state.position);
 
-        {this.state.places
-          ? this.state.places.map((place) => (
-              <p key={place.formatted_address}>{place.formatted_address} </p>
-            ))
-          : null}
-      </div>
+    return (
+      <>
+        {" "}
+        {this.state.isLoading ? (
+          <></>
+        ) : (
+          <Testmap position={this.state.position} />
+        )}{" "}
+      </>
     );
   }
 }
-
 export default App;
