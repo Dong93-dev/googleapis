@@ -6,8 +6,8 @@ class App extends Component {
   state = {
     defaultProps: {
       center: {
-        lat: 51.454514,
-        lng: -2.5879,
+        lat: 53.483959,
+        lng: -2.244644,
       },
       zoom: 11,
     },
@@ -20,8 +20,14 @@ class App extends Component {
 
   handleApiLoaded = (map, maps) => {
     let places = [];
+    const poi = new window.google.maps.LatLng(
+      this.state.defaultProps.center.lat,
+      this.state.defaultProps.center.lng
+    );
     const request = {
+      location: poi,
       query: "campsites",
+      radius: "500",
       fields: ["name", "geometry"],
     };
     // use map and maps objects
@@ -46,7 +52,7 @@ class App extends Component {
         <div
           id="map"
           className="google-map"
-          style={{ height: "50vh", width: "50%" }}
+          style={{ height: "50vh", width: "100%" }}
         >
           {/* {this.state.map} */}
           <GoogleMapReact
@@ -59,14 +65,9 @@ class App extends Component {
             onGoogleApiLoaded={({ map, maps }) =>
               this.handleApiLoaded(map, maps)
             }
-          />
+          ></GoogleMapReact>
         </div>
-        <p>
-          {
-            (this.state.defaultProps.center.lat,
-            this.state.defaultProps.center.lng)
-          }
-        </p>
+
         {this.state.places
           ? this.state.places.map((place) => (
               <p key={place.formatted_address}>{place.formatted_address} </p>
