@@ -3,6 +3,7 @@ import GoogleMapReact from "google-map-react";
 import { Component } from "react";
 import "./map.css"
 import CampsiteMarker from "./CampsiteMarker"
+const { REACT_APP_API_KEY } = process.env;
 
 class Testmap extends Component {
   state = {
@@ -14,7 +15,8 @@ class Testmap extends Component {
       zoom: 11,
     },
     places: [],
-    isLoading: true
+    isLoading: true,
+    isShown: { show: true, shownId: ''}
   };
 
   componentDidMount() {
@@ -50,16 +52,16 @@ class Testmap extends Component {
     });
   };
 
-  // Marker = (props) => {
-  //   return (
-  //     <div>
-  //       <img src={props.image} alt="camp location" className="Marker__icon" />
-  //     </div>)
-  // }
+  setIsShown = (trueOrFalse, markerId) => {
+    this.setState(() => {
+      return { isShown: { show: trueOrFalse, shownId: markerId } };
+    });
+}
+
 
   render () {
-    const { places } = this.state;
-
+    const { places, isShown } = this.state;
+    console.log(places)
     return (
       <div className="App">
         <div
@@ -70,7 +72,7 @@ class Testmap extends Component {
           {/* {this.state.map} */}
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: "AIzaSyAuc0iyyESvJUyPOLjHVn4j-RWcEBPrG0U",
+              key: { REACT_APP_API_KEY },
             }}
             defaultCenter={this.state.defaultProps.center}
             defaultZoom={this.state.defaultProps.zoom}
@@ -84,16 +86,13 @@ class Testmap extends Component {
                 lat={place.geometry.location.lat()}
                 lng={place.geometry.location.lng()}
                 key={place.place_id}
+                id={place.place_id}
                 image="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Tent_Flat_Icon_Vector.svg/1024px-Tent_Flat_Icon_Vector.svg.png"
                 name={place.name}
+                isShown={isShown}
+                setIsShown={this.setIsShown}
               ></CampsiteMarker>
             })}
-
-            {/* <this.Marker text={"marker"}
-              lat={53.6114287}
-              lng={-2.3053994}
-            ></this.Marker>  */}
-  
           </GoogleMapReact>
         </div>
 
