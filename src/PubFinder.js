@@ -35,6 +35,7 @@ class PubFinder extends Component {
     const { place_id, map } = this.props;
     const service = new window.google.maps.places.PlacesService(map);
     service.getDetails({ placeId: place_id }, (results, status) => {
+      console.log(results);
       const name = results.name;
       const rating = results.rating;
       const location = results.geometry.location;
@@ -62,7 +63,11 @@ class PubFinder extends Component {
       <div>
         <h2>Pubs nearby:</h2>
         {this.state.pubs
-          ? this.state.pubs.map((pub) => <p key={pub.name}>{pub.name}</p>)
+          ? this.state.pubs.map((pub) => (
+              <p key={pub.name}>
+                {pub.name} {pub.rating}🍺
+              </p>
+            ))
           : null}
       </div>
     );

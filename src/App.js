@@ -3,6 +3,8 @@ import GoogleMapReact from "google-map-react";
 import { Component } from "react";
 import { Link, Router } from "@reach/router";
 import PubFinder from "./PubFinder";
+const { REACT_APP_API_KEY } = process.env;
+
 class App extends Component {
   state = {
     defaultProps: {
@@ -16,6 +18,7 @@ class App extends Component {
 
   componentDidMount() {
     // console.log("mount", this.state.places);
+
     this.setState({ places: [], place_id: "" });
   }
 
@@ -47,6 +50,7 @@ class App extends Component {
           // fields: ["website", "price_level", "rating"],
         };
         service.getDetails(request2, (results, status) => {
+          console.log(results);
           this.setState({ places, place_id: places[0].place_id, map });
         });
       }
@@ -65,7 +69,7 @@ class App extends Component {
             {/* {this.state.map} */}
             <GoogleMapReact
               bootstrapURLKeys={{
-                key: "AIzaSyAuc0iyyESvJUyPOLjHVn4j-RWcEBPrG0U",
+                key: { REACT_APP_API_KEY },
               }}
               defaultCenter={this.state.defaultProps.center}
               defaultZoom={this.state.defaultProps.zoom}
