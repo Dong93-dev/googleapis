@@ -1,6 +1,8 @@
 import "../App.css";
 import GoogleMapReact from "google-map-react";
 import { Component } from "react";
+import "./map.css"
+import CampsiteMarker from "./CampsiteMarker"
 
 class Testmap extends Component {
   state = {
@@ -48,9 +50,12 @@ class Testmap extends Component {
     });
   };
 
-  Marker = (props) => {
-    return <div>{props.text}</div>
-  }
+  // Marker = (props) => {
+  //   return (
+  //     <div>
+  //       <img src={props.image} alt="camp location" className="Marker__icon" />
+  //     </div>)
+  // }
 
   render () {
     const { places } = this.state;
@@ -75,10 +80,13 @@ class Testmap extends Component {
             }
           >
             {places.map((place) => {
-              return <this.Marker text={"marker"}
+              return <CampsiteMarker text={"marker"}
                 lat={place.geometry.location.lat()}
                 lng={place.geometry.location.lng()}
-              ></this.Marker>
+                key={place.place_id}
+                image="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Tent_Flat_Icon_Vector.svg/1024px-Tent_Flat_Icon_Vector.svg.png"
+                name={place.name}
+              ></CampsiteMarker>
             })}
 
             {/* <this.Marker text={"marker"}

@@ -1,0 +1,19 @@
+.Marker__holder {
+  display: grid;
+  grid-column: 1fr 2fr;
+}
+
+.Marker__icon {
+  grid-column: 1;
+  height: 40px;
+}
+
+.Marker__name {
+  grid-column: 2;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  width: 150px;
+  font-weight: bold;
+  text-shadow: 2px 2px white;
+  text-align: left;
+}
