@@ -18,6 +18,10 @@ class Testmap extends Component {
     this.setState({ places: [] });
   }
 
+  Marker = (props) => {
+    return <div>{props.text}</div>
+  }
+
   handleApiLoaded = (map, maps) => {
     let places = [];
     const poi = new window.google.maps.LatLng(
@@ -48,7 +52,6 @@ class Testmap extends Component {
 
   render() {
     console.log("props", this.props);
-
     return (
       <div className="App">
         <div
@@ -67,7 +70,9 @@ class Testmap extends Component {
             onGoogleApiLoaded={({ map, maps }) =>
               this.handleApiLoaded(map, maps)
             }
-          ></GoogleMapReact>
+          >
+            <this.Marker text={"marker"} lat={53.595966} lng={-2.286}></this.Marker>
+          </GoogleMapReact>
         </div>
 
         {this.state.places

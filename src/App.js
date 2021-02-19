@@ -1,5 +1,4 @@
 import "./App.css";
-import GoogleMapReact from "google-map-react";
 import { Component } from "react";
 import Testmap from "./components/map";
 
@@ -28,15 +27,13 @@ class App extends Component {
 
   render() {
     console.log("rendering", this.state.position);
-
     return (
       <>
-        {" "}
         {this.state.isLoading ? (
           <></>
         ) : (
           <Testmap position={this.state.position} />
-        )}{" "}
+        )}
       </>
     );
   }
