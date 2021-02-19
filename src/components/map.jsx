@@ -11,15 +11,13 @@ class Testmap extends Component {
       },
       zoom: 11,
     },
+    places: [],
+    isLoading: true
   };
 
   componentDidMount() {
     console.log("mount", this.state.places);
     this.setState({ places: [] });
-  }
-
-  Marker = (props) => {
-    return <div>{props.text}</div>
   }
 
   handleApiLoaded = (map, maps) => {
@@ -40,18 +38,23 @@ class Testmap extends Component {
     const service = new window.google.maps.places.PlacesService(map);
     console.dir(service);
     service.textSearch(request, (results, status) => {
-      if (status == window.google.maps.places.PlacesServiceStatus.OK) {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         for (let i = 0; i < results.length; i++) {
           places.push(results[i]);
         }
-        console.log("places", results);
-        this.setState({ places });
+        console.log("places", places);
+        this.setState({ places, isLoading: false });
       }
     });
   };
 
-  render() {
-    console.log("props", this.props);
+  Marker = (props) => {
+    return <div>{props.text}</div>
+  }
+
+  render () {
+    const { places } = this.state;
+
     return (
       <div className="App">
         <div
@@ -71,7 +74,18 @@ class Testmap extends Component {
               this.handleApiLoaded(map, maps)
             }
           >
-            <this.Marker text={"marker"} lat={53.595966} lng={-2.286}></this.Marker>
+            {places.map((place) => {
+              return <this.Marker text={"marker"}
+                lat={place.geometry.location.lat()}
+                lng={place.geometry.location.lng()}
+              ></this.Marker>
+            })}
+
+            {/* <this.Marker text={"marker"}
+              lat={53.6114287}
+              lng={-2.3053994}
+            ></this.Marker>  */}
+  
           </GoogleMapReact>
         </div>
 
